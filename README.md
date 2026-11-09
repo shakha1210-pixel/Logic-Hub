@@ -1,2 +1,1 @@
 # Logic-Hub
-Hypercasual game. 
