@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a"><title>LogicHub</title>
+<style>
+/* ===== TOKENS (Android: values map 1:1 to Compose/XML theme) ===== */
+:root{color-scheme:dark;--bg:#0a0e1a;--sf:#121a2c;--sf2:#1a2438;--ln:rgba(160,182,230,.13);--tx:#f2f5ff;--mu:#93a1bd;
+--pr:#8d9cff;--pr-t:rgba(141,156,255,.15);--cy:#69dbe6;--gold:#f0c26b;--ok:#5fd6a3;--er:#ff8a94;
+--r1:12px;--r2:18px;--r3:26px;--nav:76px;
+--bronze:#c98a5e;--silver:#c3d2e6;--gold-r:#f0c26b;--platinum:#8fd8d8;--diamond:#8fc7ff;
+--white:#e9eef6;--rose:#ffa9c4;--red:#f2596f;--crimson:#d92d58}
+@media(prefers-color-scheme:light){:root:not([data-t=dark]){color-scheme:light;--bg:#f3f6fc;--sf:#fff;--sf2:#edf1f9;--ln:rgba(35,54,92,.12);--tx:#121a2c;--mu:#5f6d87;--pr:#4f5fd8;--pr-t:rgba(79,95,216,.1);--cy:#0b7f8c;--gold:#9a6200;--ok:#14805a;--er:#bf3d4b;--white:#9aa7b8}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:radial-gradient(ellipse at 50% -10%,rgba(100,118,240,.2),transparent 50%),var(--bg);color:var(--tx);font:500 15px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+button,select{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0;text-align:inherit;touch-action:manipulation}
+button:focus-visible,select:focus-visible{outline:3px solid var(--pr);outline-offset:2px}
+h1,h2,h3,p{margin:0}svg{display:block;flex:none}
+#app{max-width:560px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) 16px calc(var(--nav) + 28px + env(safe-area-inset-bottom,0px))}
+.mu{color:var(--mu);font-size:.85rem}.row{display:flex;align-items:center;gap:10px}.sp{flex:1}
+.card{background:linear-gradient(150deg,color-mix(in srgb,var(--sf) 93%,white 7%),var(--sf));border:1px solid var(--ln);border-radius:var(--r2);padding:16px}
+.h2{font-size:1.2rem;font-weight:750;letter-spacing:-.03em;margin:26px 2px 12px}
+.bar{height:7px;border-radius:9px;background:var(--sf2);overflow:hidden}.bar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--c,var(--pr)),var(--cy));transition:width .4s}
+/* top bar */
+.top{display:flex;align-items:center;gap:8px;margin-bottom:18px}
+.logo{font-weight:800;font-size:1.3rem;letter-spacing:-.05em}.logo b{color:var(--pr)}
+.chip{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px 0 8px;border-radius:14px;background:var(--sf);border:1px solid var(--ln)}
+.chip b{font-size:.9rem}.chip small{display:block;color:var(--mu);font-size:.68rem;margin-top:-2px}
+.emb{width:30px;height:34px;display:grid;place-items:center;clip-path:polygon(50% 0,94% 15%,88% 69%,50% 100%,12% 69%,6% 15%);background:linear-gradient(145deg,#fff8,var(--rc),#0006);color:#10131f;font-weight:800;font-size:.8rem}
+.crown{clip-path:polygon(0 25%,23% 45%,36% 5%,51% 40%,70% 0,80% 45%,100% 20%,88% 100%,12% 100%);background:linear-gradient(145deg,#fff8,var(--cy),#0006)}
+.tok{color:var(--gold);font-weight:800;padding:0 12px}
+/* hero: the dual-rank emblem pair is the memorable element */
+.hero{position:relative;overflow:hidden;border-radius:var(--r3);padding:22px 20px;border:1px solid rgba(173,187,255,.22);background:radial-gradient(circle at 85% 20%,rgba(105,219,230,.2),transparent 45%),linear-gradient(130deg,#18223f,#101a31 60%,#1a2850);color:#f2f5ff}
+.hero h1{font-size:2.1rem;line-height:1.05;letter-spacing:-.06em;font-weight:800;max-width:11ch}
+.hero p{color:#b4c1dd;margin-top:8px;max-width:26ch;font-size:.9rem}
+.hero .emb{position:absolute;right:26px;top:22px;width:74px;height:86px;font-size:1.6rem;filter:drop-shadow(0 8px 18px rgba(0,0,0,.4))}
+.hero .emb.crown{right:96px;top:70px;width:56px;height:56px;font-size:1.2rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:14px;font-weight:700;background:var(--sf2);transition:transform .15s}
+.btn:active{transform:scale(.97)}.btn.pri{background:linear-gradient(135deg,#a8b2ff,#6f80f2);color:#0a1022}.btn.sm{min-height:40px;padding:0 14px;font-size:.88rem}
+.btn:disabled{opacity:.45;cursor:default}
+.hero .btn{margin-top:18px;background:#e9edff;color:#18213f}
+/* challenges / games */
+.ch{display:grid;gap:10px}.ch .card{padding:14px}.ch .bar{margin-top:8px}.rw{color:var(--gold);font-weight:700;font-size:.85rem}
+.gl{display:grid;gap:10px}.g{display:flex;align-items:center;gap:14px;width:100%;padding:14px}
+.gi{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;background:hsl(var(--h) 70% 62%/.18);color:hsl(var(--h) 75% 70%);font-size:1.5rem;font-weight:800}
+.g b{display:block;font-size:1.02rem}
+/* segmented + chips */
+.seg{display:flex;gap:4px;padding:4px;background:var(--sf2);border-radius:14px}
+.seg button{flex:1;min-height:40px;border-radius:11px;text-align:center;font-weight:650;font-size:.88rem;color:var(--mu)}
+.seg button[aria-pressed=true]{background:var(--sf);color:var(--pr);box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.scopes{display:flex;gap:8px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none}.scopes::-webkit-scrollbar{display:none}
+.sc{flex:none;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--ln);background:var(--sf);font-size:.86rem;font-weight:650;color:var(--mu)}
+.sc[aria-pressed=true]{border-color:var(--pr);background:var(--pr-t);color:var(--pr)}.sc:disabled{opacity:.5;border-style:dashed}
+/* rank cards */
+.rk{display:grid;grid-template-columns:1fr 1fr;gap:10px}.rk .card{padding:14px}
+.rk .emb{width:46px;height:52px;font-size:1.1rem;margin-bottom:10px}.rk strong{font-size:1.25rem;letter-spacing:-.04em;display:block}
+.lb{display:grid;gap:8px;margin-top:10px}
+.lr{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:16px;background:var(--sf);border:1px solid var(--ln)}
+.lr.me{border-color:var(--pr);background:var(--pr-t)}
+.pl{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--sf2);font-weight:800;font-size:.85rem}
+.lr:nth-child(1) .pl{background:rgba(240,194,107,.2);color:var(--gold)}
+.lr b{display:block;font-size:.95rem}.pts{margin-left:auto;font-weight:800;color:var(--cy)}
+.empty{padding:26px;text-align:center;color:var(--mu);border:1px dashed var(--ln);border-radius:var(--r2)}
+/* medals */
+.tiers{display:flex;gap:6px;margin-top:12px}.tr{flex:1;text-align:center;padding:8px 2px;border-radius:12px;border:1px solid var(--ln);font-size:.75rem;color:var(--mu)}
+.tr.on{border-color:var(--tc);color:var(--tx);background:color-mix(in srgb,var(--tc) 14%,transparent)}.tr b{display:block;font-size:.8rem}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.m{padding:14px;text-align:center;position:relative}.m.lock{opacity:.55;filter:saturate(.4)}
+.md{width:64px;height:64px;margin:4px auto 10px;display:grid;place-items:center;border-radius:50%;font-size:1.6rem;color:#fff;text-shadow:0 2px 4px #0008;border:4px solid var(--mc);background:radial-gradient(circle at 32% 25%,#fff9,var(--mc) 35%,#0007);box-shadow:0 8px 20px #0005,0 0 18px color-mix(in srgb,var(--mc) 40%,transparent)}
+.m h3{font-size:.92rem}.m p{font-size:.78rem;color:var(--mu);min-height:34px;margin:2px 0 6px}.m .rw{font-size:.8rem}
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:0 12px calc(8px + env(safe-area-inset-bottom,0px));pointer-events:none}
+.nav div{pointer-events:auto;display:flex;gap:4px;width:100%;max-width:520px;padding:6px;border-radius:26px;background:color-mix(in srgb,var(--sf) 88%,transparent);backdrop-filter:blur(20px);border:1px solid var(--ln);box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.nav button{flex:1;min-height:58px;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--mu);font-size:.74rem;font-weight:650;text-align:center}
+.nav button.on{background:var(--pr-t);color:var(--pr)}
+/* sheet */
+#ov{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;background:rgba(4,6,12,.66);z-index:30}
+#ov.on{display:flex}.sheet{width:100%;max-width:560px;border-radius:28px 28px 0 0;background:var(--sf);border:1px solid var(--ln);padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px));animation:up .25s cubic-bezier(.2,.8,.2,1)}
+.sheet .emb{width:56px;height:64px;font-size:1.3rem}.sheet h2{font-size:1.4rem;letter-spacing:-.04em;margin:10px 0 4px}.sheet .btn{width:100%;margin-top:16px}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+#toast{position:fixed;left:50%;bottom:calc(var(--nav) + 24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,8px);background:var(--tx);color:var(--bg);padding:11px 20px;border-radius:999px;font-weight:650;font-size:.9rem;opacity:0;pointer-events:none;transition:.2s;z-index:40}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ===== 3D RANK EMBLEMS (Magnific renders, transparent WebP) ===== */
+.rimg{display:block;flex:none;width:auto;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
+.chip .rimg{height:34px;max-width:54px}
+.hero h1{max-width:8.6ch}
+.hero .rimg{position:absolute;right:12px;top:10px;height:84px;max-width:132px;filter:drop-shadow(0 12px 22px rgba(0,0,0,.55));animation:rfloat 6s ease-in-out infinite}
+.hero .emb.crown{right:34px;top:108px;width:46px;height:46px;font-size:1.05rem}
+.rk .rimg{height:56px;max-width:92px;margin-bottom:10px}
+.sheet .rimg{height:84px;max-width:140px;margin-bottom:2px}
+.rimg-silver{-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+@keyframes rfloat{50%{transform:translateY(-5px)}}
+@media(prefers-reduced-motion:reduce){.hero .rimg{animation:none}}
+</style></head><body>
+<div id="app"></div><nav class="nav" id="nav" aria-label="Asosiy"></nav>
+<div id="ov" role="dialog" aria-modal="true"></div><div id="toast" role="status" aria-live="polite"></div>
+<script>
+/* ===== CONFIG: mirrors src/core (logic-hub-core / achievement / ranking engines) ===== */
+const XP_RANKS=[['bronze','Bronza',0],['silver','Kumush',100],['gold','Oltin',300],['platinum','Platina',700],['diamond','Olmos',1500]];
+const MEDAL_TIERS=[['white','Oq',0],['rose','Atirgul',100],['red','Qizil',300],['crimson','To‘q qizil',700]];
+const PERIODS=[['weekly','Haftalik'],['monthly','Oylik'],['allTime','Umumiy']];
+const SCOPES=[['global','Jahon'],['country','Mamlakat'],['region','Viloyat'],['city','Shahar'],['friends','Do‘stlar'],['pvpLeague','PvP liga']];
+const GAMES=[{id:'m',n:'Math Logic',d:'Yo‘qolgan raqamni toping',h:235,i:'∑'},{id:'a',n:'Arrows Go',d:'Barcha o‘qlarni taxtadan chiqaring',h:165,i:'➜'},{id:'e',n:'Echo',d:'Qarang, eslang, takrorlang',h:20,i:'◉'}];
+const ACH=[['first-step','First Step','Birinchi o‘yinni yakunlang',40,10,'white','★'],['sharp-mind','Sharp Mind','Math Logic’da 100+ ball oling',70,5,'rose','◆'],['score-500','High Scorer','Jami 500 ball to‘plang',100,0,'red','♜'],['grand','Grand Master','Maxsus yuqori bosqich',250,60,'crimson','✦']];
+const CH=[['Xotira quruvchisi','Echo’da 2 raund',1,2,40],['Mantiq sprinti','5 ta masala yeching',1,5,35],['Kunlik kashfiyotchi','2 xil o‘yin sinang',0,2,50]];
+/* Server seam: replace with real API (Android: repository layer). All values below are demo data. */
+const ME={id:'me',name:'Siz',country:'UZ',region:'qashqadaryo',city:'qarshi'};
+const ENT=[['me','Siz','UZ','qashqadaryo','qarshi',[420,1100,3100]],['a','Aster','UZ','toshkent','toshkent',[760,1800,9000]],['b','Nova','UZ','qashqadaryo','qarshi',[420,1000,7000]],
+['c','Orion','KZ','almaty','almaty',[900,2100,11000]],['d','Lyra','UZ','samarqand','samarqand',[250,600,4000]],['e','Zafar','UZ','qashqadaryo','shahrisabz',[510,1300,5200]],['f','Mira','TR','istanbul','istanbul',[640,1500,6400]]]
+.map(([id,name,country,region,city,p])=>({id,name,country,region,city,pts:{weekly:p[0],monthly:p[1],allTime:p[2]}}));
+const FRIENDS=['b','d'];
+const S={tab:'home',xp:420,mp:110,tok:240,period:'weekly',scope:'global',claimed:0,got:['first-step','sharp-mind']};
+try{Object.assign(S,JSON.parse(localStorage.getItem('lh-ui')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('lh-ui',JSON.stringify({tok:S.tok,claimed:S.claimed,period:S.period,scope:S.scope}))}catch(e){}};
+const $=s=>document.querySelector(s),fmt=n=>n.toLocaleString('en-US');
+const tier=(v,t)=>t.reduce((c,x,i)=>v>=x[2]?i:c,0);
+/* Ranking: same ordering + competition ranks (1,1,3) as ranking-engine.mjs */
+function board(){const s=S.scope,p=S.period,f=e=>s==='global'||(s==='country'&&e.country===ME.country)||(s==='region'&&e.region===ME.region)||(s==='city'&&e.city===ME.city)||(s==='friends'&&(e.id==='me'||FRIENDS.includes(e.id)));
+ const l=ENT.filter(f).sort((a,b)=>b.pts[p]-a.pts[p]||a.id.localeCompare(b.id));let r=0;return l.map((e,i)=>{if(i===0||e.pts[p]!==l[i-1].pts[p])r=i+1;return{...e,rank:r}})}
+const I={home:'⌂',rank:'♛',medal:'✦'};
+/* XP rank emblem: Magnific 3D render (assets/rank-*.webp), keyed by XP_RANKS[i][0] */
+const emb=(i)=>`<img class="rimg rimg-${XP_RANKS[i][0]}" src="assets/rank-${XP_RANKS[i][0]}.webp" alt="${XP_RANKS[i][1]} rank" width="720" decoding="async">`;
+function xpInfo(){const i=tier(S.xp,XP_RANKS),n=XP_RANKS[i+1];return{i,n,pct:n?(S.xp-XP_RANKS[i][2])/(n[2]-XP_RANKS[i][2])*100:100,left:n?n[2]-S.xp:0}}
+function myPlace(){const b=board().find(e=>e.id==='me');return b?'#'+b.rank:'—'}
+function topbar(){const x=xpInfo();return `<header class="top"><div class="logo">Logic<b>Hub</b></div><span class="sp"></span>
+<button class="chip" data-a="info:xp" aria-label="XP rank">${emb(x.i)}<span><b>${XP_RANKS[x.i][1]}</b><small>XP rank</small></span></button>
+<button class="chip" data-a="info:comp" aria-label="Raqobat reytingi"><span class="emb crown" style="--rc:var(--cy)">♛</span><span><b>${myPlace()}</b><small>${PERIODS.find(p=>p[0]===S.period)[1]}</small></span></button></header>`}
+/* ===== VIEWS ===== */
+const V={
+home(){const x=xpInfo();return `${topbar()}
+<section class="hero"><h1>Fikrni charxlang.</h1><p>Kichik mashqlar — katta o‘sish. Bugun ${S.xp} XP to‘pladingiz.</p>
+${emb(x.i)}<span class="emb crown" style="--rc:var(--cy)">♛</span><button class="btn" data-a="tab:rank">Reytingni ko‘rish</button></section>
+<div class="row" style="margin-top:12px"><div class="card sp"><div class="mu">Token balansi</div><div class="tok" style="padding:0;font-size:1.4rem">◈ ${S.tok}</div></div>
+<button class="card sp" data-a="daily" ${S.claimed?'disabled':''}><div class="mu">Kunlik bonus</div><b>${S.claimed?'Olindi ✓':'+30 ◈ olish'}</b></button></div>
+<h2 class="h2">Bugungi vazifalar</h2><div class="ch">${CH.map(c=>`<div class="card"><div class="row"><b>${c[0]}</b><span class="sp"></span><span class="rw">+${c[4]} ◈</span></div><div class="mu">${c[1]}</div><div class="bar"><i style="width:${c[2]/c[3]*100}%"></i></div></div>`).join('')}</div>
+<h2 class="h2">O‘yinlar</h2><div class="gl">${GAMES.map(g=>`<button class="card g" data-a="play:${g.n}"><span class="gi" style="--h:${g.h}">${g.i}</span><span><b>${g.n}</b><span class="mu">${g.d}</span></span></button>`).join('')}</div>`},
+rank(){const x=xpInfo(),b=board(),sc=SCOPES.find(s=>s[0]===S.scope);
+ return `${topbar()}
+<div class="rk"><div class="card">${emb(x.i)}<strong>${XP_RANKS[x.i][1]}</strong><div class="mu">Hisob darajasi · ${fmt(S.xp)} XP</div><div class="bar" style="margin-top:10px;--c:var(--${XP_RANKS[x.i][0]})"><i style="width:${x.pct}%"></i></div><div class="mu" style="margin-top:6px">${x.n?x.left+' XP qoldi':'Eng yuqori daraja'}</div></div>
+<div class="card"><span class="emb crown" style="--rc:var(--cy)">♛</span><strong>${myPlace()}</strong><div class="mu">Raqobat o‘rni · ${sc[1]}</div><div class="mu" style="margin-top:16px">XP rankdan mustaqil hisoblanadi.</div></div></div>
+<h2 class="h2">Reyting jadvali</h2>
+<div class="seg" role="group" aria-label="Davr">${PERIODS.map(p=>`<button aria-pressed="${S.period===p[0]}" data-a="per:${p[0]}">${p[1]}</button>`).join('')}</div>
+<div class="scopes" role="group" aria-label="Hudud">${SCOPES.map(s=>`<button class="sc" aria-pressed="${S.scope===s[0]}" ${s[0]==='pvpLeague'?'disabled title="Tez orada"':''} data-a="sco:${s[0]}">${s[1]}${s[0]==='pvpLeague'?' · tez orada':''}</button>`).join('')}</div>
+${b.length>1?`<div class="lb">${b.map(e=>`<div class="lr ${e.id==='me'?'me':''}"><span class="pl">${e.rank}</span><div><b>${e.name}</b><span class="mu">${e.city[0].toUpperCase()+e.city.slice(1)}, ${e.country}</span></div><span class="pts">${fmt(e.pts[S.period])}</span></div>`).join('')}</div>`:`<div class="empty">Bu doirada hali raqobatchilar yo‘q. Do‘stlaringizni taklif qiling.</div>`}
+<p class="mu" style="margin-top:12px">Namunaviy ma’lumotlar. Haqiqiy o‘rin server reytingidan olinadi; teng ballar bir xil o‘rin oladi (1, 1, 3).</p>`},
+medal(){const t=tier(S.mp,MEDAL_TIERS),n=MEDAL_TIERS[t+1],pct=n?(S.mp-MEDAL_TIERS[t][2])/(n[2]-MEDAL_TIERS[t][2])*100:100;
+ return `${topbar()}<div class="card"><div class="row"><div><div class="mu">Medal ballari</div><div style="font-size:2rem;font-weight:800;letter-spacing:-.05em">${fmt(S.mp)}</div></div><span class="sp"></span><b style="color:var(--${MEDAL_TIERS[t][0]})">${MEDAL_TIERS[t][1]}</b></div>
+<div class="bar" style="margin-top:12px;--c:var(--${MEDAL_TIERS[t][0]})"><i style="width:${pct}%"></i></div><div class="mu" style="margin-top:6px">${n?(n[2]-S.mp)+' ball qoldi → '+n[1]:'Eng yuqori daraja'}</div>
+<div class="tiers">${MEDAL_TIERS.map((m,i)=>`<div class="tr ${i<=t?'on':''}" style="--tc:var(--${m[0]})"><b>${m[1]}</b>${m[2]}</div>`).join('')}</div></div>
+<h2 class="h2">Yutuqlar</h2><div class="mg">${ACH.map(a=>{const on=S.got.includes(a[0]);return `<button class="card m ${on?'':'lock'}" style="--mc:var(--${a[5]})" data-a="ach:${a[0]}"><div class="md">${a[6]}</div><h3>${a[1]}</h3><p>${a[2]}</p><span class="rw">${on?'✓ ':''}${a[3]} ball${a[4]?' · +'+a[4]+' ◈':''}</span></button>`}).join('')}</div>
+<p class="mu" style="margin-top:12px">Medal ballari Account XP dan alohida. Yutuq bir marta beriladi; mukofotni server tekshiradi.</p>`}};
+function render(){$('#app').innerHTML=V[S.tab]();$('#nav').innerHTML='<div>'+[['home','Bosh sahifa'],['rank','Reyting'],['medal','Yutuqlar']].map(([k,n])=>`<button class="${S.tab===k?'on':''}" data-a="tab:${k}" ${S.tab===k?'aria-current="page"':''}><span style="font-size:1.3rem">${I[k]}</span>${n}</button>`).join('')+'</div>'}
+let tt;function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('on'),2200)}
+function sheet(h){const o=$('#ov');o.innerHTML=h?`<div class="sheet">${h}<button class="btn pri" data-a="close">Yopish</button></div>`:'';o.classList.toggle('on',!!h);if(h){const b=o.querySelector('.btn');b&&b.focus()}}
+const A={
+tab:v=>{S.tab=v;render();scrollTo(0,0)},per:v=>{S.period=v;save();render()},sco:v=>{S.scope=v;save();render()},
+daily:()=>{if(S.claimed)return;S.claimed=1;S.tok+=30;save();render();toast('+30 token qo‘shildi')},
+play:n=>toast(n+' keyingi bosqichda ulanadi'),close:()=>sheet(''),
+ach:id=>{const a=ACH.find(x=>x[0]===id);sheet(`<div class="md" style="--mc:var(--${a[5]});margin:0"><span>${a[6]}</span></div><h2>${a[1]}</h2><p class="mu">${a[2]}. ${S.got.includes(id)?'Ochilgan.':'Hali ochilmagan.'}</p>`)},
+info:k=>{const x=xpInfo();sheet(k==='xp'?`${emb(x.i)}<h2>${XP_RANKS[x.i][1]}</h2><p class="mu">Hisob darajasi tasdiqlangan o‘yin natijalaridan yig‘iladi. Jami ${fmt(S.xp)} XP${x.n?', keyingi daraja — '+x.n[1]+' ('+x.n[2]+' XP).':'.'}</p>`:
+ `<span class="emb crown" style="--rc:var(--cy)">♛</span><h2>${myPlace()} o‘rin</h2><p class="mu">${PERIODS.find(p=>p[0]===S.period)[1]} reyting, ${SCOPES.find(s=>s[0]===S.scope)[1]} doirasi. Raqobat ballari XP va medal ballaridan alohida.</p>`)}};
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el||el.disabled)return;const s=el.dataset.a,i=s.indexOf(':');(A[i<0?s:s.slice(0,i)]||(()=>{}))(i<0?'':s.slice(i+1))});
+addEventListener('keydown',e=>{if(e.key==='Escape')sheet('')});
+$('#ov').addEventListener('click',e=>{if(e.target.id==='ov')sheet('')});
+render();
+</script></body></html>
